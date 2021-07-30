@@ -12,13 +12,15 @@ static int mImagePlayer;	//画像ハンドル格納用変数
 
 static int mSoundsPanti;
 static int mSoundsKick;
+static int mSoundsJump;
 
 //初期化
 void Player_Initialize() {
 	mImagePlayer = LoadDivGraph("images/thomas2clear.png", 21, 3, 7, 70, 95, gh);	//画像のロード
 
-	mSoundsPanti = LoadSoundMem("sounds/軽いパンチ2.mp3");    //パンチ音のロード
+	mSoundsPanti = LoadSoundMem("sounds/小パンチ.mp3");    //パンチ音のロード
 	mSoundsKick = LoadSoundMem("sounds/小キック.mp3");    //キック音のロード
+	mSoundsJump = LoadSoundMem("sounds/ジャンプ.mp3"); //ジャンプ音のロード
 
 	//プレイヤーの初期化設定
 	mPlayer.jflag = false;
@@ -45,6 +47,7 @@ void Player_Finalize() {
 
 	StopSoundMem(mSoundsPanti);
 	StopSoundMem(mSoundsKick);
+	StopSoundMem(mSoundsJump);
 }
 
 //更新
@@ -88,6 +91,7 @@ void Player_Update() {
 			mPlayer.jflag = false;			//フラグをfalseにする
 	}
 	if (CheckHitKey(KEY_INPUT_SPACE) == 1 && mPlayer.jflag == false) {
+		PlaySoundMem(mSoundsJump, DX_PLAYTYPE_BACK);
 		mPlayer.jflag = true;			//ジャンプフラグをtrueにする
 		mPlayer.y_prev = mPlayer.y;				//prevに360を代入
 		mPlayer.y = mPlayer.y - 20;				//yに340を代入
@@ -138,6 +142,7 @@ void Player_Update() {
 				mPlayer.result = mPlayer.ix;
 				if (CheckHitKey(KEY_INPUT_Z) == 1 && CheckHitKey(KEY_INPUT_DOWN) == 1)//しゃがみ攻撃
 				{
+					PlaySoundMem(mSoundsPanti, DX_PLAYTYPE_BACK);
 					mPlayer.attack++;
 					if (mPlayer.attack == 1) {//attackが１なら
 

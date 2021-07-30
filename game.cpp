@@ -5,12 +5,18 @@
 #include "Enemy.h"
 
 static int mImageHandle; //画像ハンドル格納用変数
+
+static int mSoundBGM;
+
 //初期化
 void Game_Initialize() {
 	mImageHandle = LoadGraph("images/haikeigazo.png"); //画像のロード
 
 	Player_Initialize();	//
 	Enemy_Initialize();
+
+	PlayMusic("sounds/NES-Action-C02-1(Stage_Select).mp3", DX_PLAYTYPE_LOOP);
+
 }
 
 //終了処理
@@ -19,6 +25,8 @@ void Game_Finalize() {
 
 	Player_Finalize();	//プレイヤーの開放
 	Enemy_Finalize();
+
+	StopMusic();
 }
 
 //更新
