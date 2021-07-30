@@ -10,9 +10,15 @@ extern int HitBox(PLAYER*, ENEMY*);	//当たり判定（四角）
 
 static int mImagePlayer;	//画像ハンドル格納用変数
 
+static int mSoundsPanti;
+static int mSoundsKick;
+
 //初期化
 void Player_Initialize() {
 	mImagePlayer = LoadDivGraph("images/thomas2clear.png", 21, 3, 7, 70, 95, gh);	//画像のロード
+
+	mSoundsPanti = LoadSoundMem("sounds/軽いパンチ2.mp3");    //パンチ音のロード
+	mSoundsKick = LoadSoundMem("sounds/小キック.mp3");    //キック音のロード
 
 	//プレイヤーの初期化設定
 	mPlayer.jflag = false;
@@ -36,6 +42,9 @@ void Player_Initialize() {
 //終了処理
 void Player_Finalize() {
 	DeleteGraph(mImagePlayer);	//画像の解放
+
+	StopSoundMem(mSoundsPanti);
+	StopSoundMem(mSoundsKick);
 }
 
 //更新
@@ -91,6 +100,7 @@ void Player_Update() {
 
 	//パンチ
 	if (CheckHitKey(KEY_INPUT_Z) == 1 && mPlayer.panchi == false) {//Zキーを押したら
+		PlaySoundMem(mSoundsPanti, DX_PLAYTYPE_BACK);
 		mPlayer.panchi = true;			//panchiをtrueにする
 		mPlayer.stop = true;
 
